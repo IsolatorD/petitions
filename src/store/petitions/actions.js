@@ -55,17 +55,17 @@ export const getPetitions = () => {
   }
 }
 
-export const getPetition = (id) => {
-  return async (dispatch, getState) => {
-    const api = new API({subdomain: getState().organization.subdomain})
-    try {
-      const response = (await api.getPetition(id)).data
-      dispatch({
-        type: Types.SET_PETITION,
-        payload: response
-      })
-    } catch (error) {
-      console.log('Error get petition: ', error)
-    }
-  }
-}
+// export const getPetition = (id) => {
+//   return async (dispatch, getState) => {
+//     const api = new API({subdomain: getState().organization.subdomain})
+//     try {
+//       const response = (await api.getPetition(id)).data
+//       dispatch({
+//         type: Types.SET_PETITION,
+//         payload: response
+//       })
+//     } catch (error) {
+//       console.log('Error get petition: ', error)
+//     }
+//   }
+// }

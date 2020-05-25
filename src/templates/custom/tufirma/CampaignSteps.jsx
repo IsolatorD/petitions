@@ -9,6 +9,7 @@ import Step1 from './steps/step1'
 import Step2 from './steps/step2'
 import { connect } from 'react-redux'
 import API from '../../../api'
+import {helpers} from '../../../helpers'
 
 const CampaignSteps = (props) => {
   const [step, setStep] = useState(1)
@@ -25,7 +26,7 @@ const CampaignSteps = (props) => {
     send_email_to_target: false
   })
   const [projectDescription, setProjectDescription] = useState('')
-  const [ressources, setRessources] = useState({images: null, video: ''})
+  const [ressources, setRessources] = useState({images: null, video: null})
   const [tags, setTags] = useState([])
 
   const addTags = (tag) => {
@@ -56,19 +57,23 @@ const CampaignSteps = (props) => {
     formData.append('category_id', category.id)
     formData.append('visibility', true)
     formData.append('type', `${type}`.toLowerCase())
-    ressources.images.map((img) => {
-      formData.append('images', img)
-    })
     formData.append('video', ressources.video)
     formData.append('amount_goal', 0)
     formData.append('publishing_date', publishing_date)
     formData.append('send_sms_to_target', false)
-    tags.map((tag) => {
-      formData.append('tags', tag)
-    })
     Object.keys(destinatario).map(el => {
       formData.append(el, destinatario[el])
     })
+    
+    // helpers.appendArray(formData, tags, 'tags')
+    // helpers.appendArray(formData, ressources.images, 'images')
+    tags.map((tag, i) => {
+      formData.append(`tag[${i}]`, tag)
+    })
+    ressources.images.map((image, i) => {
+      formData.append(`images[${i}]`, image)
+    })
+
     try {
       const response = (await api.createPetition(formData)).data
       console.log('Response create petition: ', response)

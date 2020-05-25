@@ -26,7 +26,7 @@ const Badge = (props) => (
   </div>
 )
 
-Badge.prototype = {
+Badge.propTypes = {
   color: PropTypes.string,
   textColor: PropTypes.string,
   rounded: PropTypes.bool

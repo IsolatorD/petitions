@@ -91,7 +91,7 @@ const TuFirmaThanks = () => {
             className="tf-search-box"
             style={{
               width: `${80}%`,
-              height: ['md', 'lg', 'xl'].includes(screenClass) ? `${8}rem` : screenClass === 'xs' ? `${9}rem` : `${10}rem`,
+              height: ['md', 'lg', 'xl'].includes(screenClass) ? `${13}rem` : screenClass === 'xs' ? `${9}rem` : `${10}rem`,
               paddingTop: ['xs', 'sm'].includes(screenClass) ? `${.7}rem` : `${1}rem`,
               paddingLeft: `${2}rem`,
               paddingRight: `${2}rem`,

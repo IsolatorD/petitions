@@ -32,7 +32,7 @@ const Avatar = (props) => (
   </div>
 )
 
-Avatar.prototype = {
+Avatar.propTypes = {
   url: PropTypes.string,
   size: PropTypes.number,
   color: PropTypes.string,

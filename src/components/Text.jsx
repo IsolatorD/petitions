@@ -5,7 +5,7 @@ const Button = (props) => (
     // className={props.className ? '' : 'default-text'}
     {...props}
   >
-    {props.children || 'Texto'}
+    {props.children || ''}
   </span>
 )
 

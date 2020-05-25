@@ -93,7 +93,7 @@ const Forms = ({formTitle, styles, children, isAuth}) => {
   )
 }
 
-Forms.prototype = {
+Forms.propTypes = {
   formTitle: PropTypes.string,
   styles: PropTypes.object,
   isAuth: PropTypes.bool

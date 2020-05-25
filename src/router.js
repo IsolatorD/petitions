@@ -16,9 +16,12 @@ import Interna from './templates/custom/tufirma/Interna'
 import Thanks from './templates/custom/tufirma/thanks'
 import NotFound from './pages/NotFound'
 
+import ScrollToTop from './components/ScrollToTop'
+
 export default function Routes() {
   return (
     <Router>
+      <ScrollToTop/>
       <Switch>
         <Route exact path="/:name">
           <Landing />

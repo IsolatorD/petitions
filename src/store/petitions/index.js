@@ -3,7 +3,7 @@ import * as types from './types'
 let defaultState = {
   categories: [],
   petitions: [],
-  petition: null
+  // petition: null
 }
 
 const petitions = (state = defaultState, action) => {
@@ -12,8 +12,8 @@ const petitions = (state = defaultState, action) => {
       return { ...state, categories: action.payload }
     case types.SET_PETITIONS:
       return { ...state, petitions: action.payload }
-    case types.SET_PETITION:
-      return { ...state, petition: action.payload }
+    // case types.SET_PETITION:
+    //   return { ...state, petition: action.payload }
     default:
       return state
   }

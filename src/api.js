@@ -7,13 +7,14 @@ export default class API {
     this.orgID = orgID
     this.subdomain = subdomain
     this.token = token
+    this.headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      Authorization: `bearer ${token}`
+    }
     this.axios = axios.create({
       baseURL,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        Authorization: `bearer ${token}`
-      }
+      headers: this.headers
     })
   }
 
@@ -57,6 +58,11 @@ export default class API {
   }
 
   createPetition (data) {
-    return this.axios.post(`o/${this.orgID}/petition/create`, data)
+    this.headers = {
+      'Content-Type': 'multipart/form-data',
+      'Accept': 'application/json',
+      Authorization: `bearer ${this.token}`
+    }
+    return this.axios.post(`o/${this.orgID}/petition/create`, data, {headers: this.headers})
   }
 }

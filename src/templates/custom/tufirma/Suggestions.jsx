@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import {Row, Col, useScreenClass, Visible} from 'react-grid-system'
+import PropTypes from 'prop-types'
+
+import {Row, Col, useScreenClass} from 'react-grid-system'
 import {connect} from 'react-redux'
 
 import {withRouter} from 'react-router-dom'
@@ -9,8 +11,9 @@ import Avatar from '../../../components/Avatar'
 import Text from '../../../components/Text'
 import Button from '../../../components/Button'
 
-const Suggestions = ({ petitions, history, subdomain }) => {
+const Suggestions = ({ petitions, history, subdomain, title }) => {
   const screenClass = useScreenClass()
+  const [threePetitions, setThreePetitions] = useState([])
 
   const setCategoryImage = (category) => {
     return require('../../../assets/icons/tufirma/1.svg')
@@ -20,154 +23,243 @@ const Suggestions = ({ petitions, history, subdomain }) => {
     history.push(`/${subdomain}/campaign/${petition_id}`)
   }
 
+  useEffect(() => {
+    const tpetition = []
+    if (petitions.length > 0) {
+      petitions.map((p, i) => {
+        if (i <= 2) {
+          tpetition.push(p)
+        }
+      })
+    }
+
+    setThreePetitions(tpetition)
+  }, [petitions])
+
   return (
     <>
       {
-        petitions.length > 0 ?
+        threePetitions.length > 0 ?
         (
-
-          <Row justify={'center'}>
+          <>
             {
-              petitions.map((petition, i) => (
-                <Col
-                  key={i}
-                  xs={12}
-                  sm={12}
-                  md={10}
-                  lg={10}
-                  xl={10}
+              title &&
+              <Col
+                xs={12}
+                sm={12}
+                md={12}
+                lg={8}
+                xl={8}
+                style={{
+                  marginBottom: '1rem',
+                  paddingLeft: ['xs', 'sm', 'md'].includes(screenClass) ? '15px' : '6rem',
+                  display: ['xs', 'sm', 'md'].includes(screenClass) ? 'flex' : 'block',
+                  justifyContent: ['xs', 'sm', 'md'].includes(screenClass) ? 'center' : ''
+                }}
+              >
+                <Text
+                  className='default-title'
+                  style={{
+                    fontSize: '2rem',
+                    color: '#333333',
+                    textAlign: 'center'
+                  }}
                 >
-                  <Card>
-                    <CardBody>
-                      <Row>
-                        <Col
-                          xs={12}
-                          sm={12}
-                          md={12}
-                          lg={2.5}
-                          xl={2.5}
-                          style={{
-                            display: ['xs', 'sm'].includes(screenClass) ? 'flex' : 'block',
-                            justifyContent: 'center',
-                            marginBottom: ['xs', 'sm', 'md'].includes(screenClass) ? '1rem' : 0,
-                            zIndex: 6
-                          }}
-                        >
-                          <img
-                            src={petition.resources.length > 0 ? petition.resources[0] : require('./assets/catedral.png')}
-                            alt="main"
+                  Petitiones relacionadas
+                </Text>
+              </Col>
+            }
+            <Row justify={'center'}>
+              {
+                threePetitions.map((petition, i) => (
+                  <Col
+                    key={i}
+                    xs={12}
+                    sm={12}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    style={{
+                      marginBottom: '1rem'
+                    }}
+                  >
+                    <Card>
+                      <CardBody>
+                        <Row>
+                          <Col
+                            xs={12}
+                            sm={12}
+                            md={12}
+                            lg={2.5}
+                            xl={2.5}
                             style={{
-                              borderRadius: '20px',
-                              width: ['xs', 'sm', 'md'].includes(screenClass) ? '100%' : '10rem',
-                              height: ['xs', 'sm', 'md'].includes(screenClass) ? '15rem' : '10rem'
+                              display: ['xs', 'sm'].includes(screenClass) ? 'flex' : 'block',
+                              justifyContent: 'center',
+                              marginBottom: ['xs', 'sm', 'md'].includes(screenClass) ? '1rem' : 0,
+                              zIndex: 6
                             }}
-                          />
-                        </Col>
-                        <Col
-                          xs={12}
-                          sm={12}
-                          md={12}
-                          lg={9.5}
-                          xl={9.5}
-                        >
-                          <Row>
-                            <Col
-                              xs={12}
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              xl={12}
-                            >
-                              <img
-                                src={setCategoryImage(petition.category_id)}
-                                alt="category"
-                                style={{
-                                  width: '2rem'
-                                }}
-                              />
-                              <Text
-                                className='default-text'
-                                style={{
-                                  marginLeft: '1rem',
-                                  fontFamily: 'Montserrat-Bold',
-                                  fontSize: ['xs', 'sm'].includes(screenClass) ? '1rem' : '1.5rem'
-                                }}
-                              >
-                                {petition.name}
-                              </Text>
-                            </Col>
-                            <Col
-                              xs={12}
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              xl={12}
+                          >
+                            <img
+                              src={petition.resources.length > 0 ? petition.resources[0] : require('./assets/catedral.png')}
+                              alt="main"
                               style={{
-                                marginTop: '1rem'
+                                borderRadius: '20px',
+                                width: ['xs', 'sm', 'md'].includes(screenClass) ? '100%' : '10rem',
+                                height: ['xs', 'sm', 'md'].includes(screenClass) ? '15rem' : '10rem'
                               }}
-                            >
-                              <Text
-                                className='default-text'
-                                style={{
-                                  marginLeft: '1rem',
-                                  fontSize: ['xs', 'sm'].includes(screenClass) ? '.6rem' : '.8rem'
-                                }}
+                            />
+                          </Col>
+                          <Col
+                            xs={12}
+                            sm={12}
+                            md={12}
+                            lg={9.5}
+                            xl={9.5}
+                          >
+                            <Row>
+                              <Col
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={12}
                               >
-                                {petition.description}
-                              </Text>
-                            </Col>
-                            <Col
-                              xs={12}
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              xl={12}
-                              style={{
-                                marginTop: '1rem',
-                                backgroundColor: '#F0F0F0',
-                                paddingTop: '1rem',
-                                paddingBottom: '1rem',
-                                borderRadius: '0 0 10px 10px'
-                              }}
-                            >
-                              <Row>
-                                <Col
-                                  xs={12}
-                                  sm={12}
-                                  md={3}
-                                  lg={3}
-                                  xl={3}
+                                <img
+                                  src={setCategoryImage(petition.category_id)}
+                                  alt="category"
+                                  style={{
+                                    width: '2rem'
+                                  }}
+                                />
+                                <Text
+                                  className='default-text'
+                                  style={{
+                                    marginLeft: '1rem',
+                                    fontFamily: 'Montserrat-Bold',
+                                    fontSize: ['xs', 'sm'].includes(screenClass) ? '1rem' : '1.5rem'
+                                  }}
                                 >
-                                  <Row>
-                                    <Col
-                                      xs={12}
-                                      sm={12}
-                                      md={12}
-                                      lg={3}
-                                      xl={3}
+                                  {petition.name}
+                                </Text>
+                              </Col>
+                              <Col
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={12}
+                                style={{
+                                  marginTop: '1rem'
+                                }}
+                              >
+                                <Text
+                                  className='default-text'
+                                  style={{
+                                    marginLeft: '1rem',
+                                    fontSize: ['xs', 'sm'].includes(screenClass) ? '.6rem' : '.8rem'
+                                  }}
+                                >
+                                  {petition.description}
+                                </Text>
+                              </Col>
+                              <Col
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={12}
+                                style={{
+                                  marginTop: '1rem',
+                                  backgroundColor: '#F0F0F0',
+                                  paddingTop: '1rem',
+                                  paddingBottom: '1rem',
+                                  borderRadius: '0 0 10px 10px'
+                                }}
+                              >
+                                <Row>
+                                  <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={3}
+                                    lg={3}
+                                    xl={3}
+                                  >
+                                    <Row>
+                                      <Col
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={3}
+                                        xl={3}
+                                        style={{
+                                          display: ['xs', 'sm', 'md'].includes(screenClass) ? 'flex' : 'block',
+                                          justifyContent: ['xs', 'sm', 'md'].includes(screenClass) ? 'center' : '',
+                                          marginBottom: ['xs', 'sm', 'md'].includes(screenClass) ? '.7rem' : 0
+                                        }}
+                                      >
+                                        <Avatar
+                                          size={2}
+                                          // url={require('./assets/gallery.svg')}
+                                        />
+                                      </Col>
+                                      <Col
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={9}
+                                        xl={9}
+                                        style={{
+                                          display: ['xs', 'sm', 'md'].includes(screenClass) ? 'flex' : 'block',
+                                          justifyContent: ['xs', 'sm', 'md'].includes(screenClass) ? 'center' : '',
+                                          marginBottom: ['xs', 'sm', 'md'].includes(screenClass) ? '.5rem' : 0
+                                        }}
+                                      >
+                                        <Text
+                                          className='default-text'
+                                          style={{
+                                            color: '#676C77',
+                                            fontSize: ['xs', 'sm'].includes(screenClass) ? '.5rem' : '.7rem'
+                                          }}
+                                        >
+                                          por{' '}
+                                          <Text
+                                            className='default-text'
+                                            style={{
+                                              color: '#676C77',
+                                              fontFamily: 'Montserrat-Bold',
+                                              fontSize: ['xs', 'sm'].includes(screenClass) ? '.5rem' : '.7rem'
+                                            }}
+                                          >
+                                            {`${petition.user.first_name} ${petition.user.last_name ?petition.user.last_name : ''}`} {' '}
+                                          </Text>
+                                        </Text>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                  <Col
+                                    xs={6}
+                                    sm={6}
+                                    md={3}
+                                    lg={3}
+                                    xl={3}
+                                  >
+                                    <img
+                                      src={require('./assets/signature.svg')}
+                                      alt="clock"
                                       style={{
-                                        display: ['xs', 'sm', 'md'].includes(screenClass) ? 'flex' : 'block',
-                                        justifyContent: ['xs', 'sm', 'md'].includes(screenClass) ? 'center' : '',
-                                        marginBottom: ['xs', 'sm', 'md'].includes(screenClass) ? '.7rem' : 0
+                                        width: '1.2rem',
+                                        marginRight: '1rem'
+                                      }}
+                                    />
+                                    <Text
+                                      className='default-text'
+                                      style={{
+                                        color: '#676C77',
+                                        fontFamily: 'Montserrat-Bold',
+                                        fontSize: ['xs', 'sm'].includes(screenClass) ? '.5rem' : '.7rem'
                                       }}
                                     >
-                                      <Avatar
-                                        size={2}
-                                        url={require('./assets/gallery.svg')}
-                                      />
-                                    </Col>
-                                    <Col
-                                      xs={12}
-                                      sm={12}
-                                      md={12}
-                                      lg={9}
-                                      xl={9}
-                                      style={{
-                                        display: ['xs', 'sm', 'md'].includes(screenClass) ? 'flex' : 'block',
-                                        justifyContent: ['xs', 'sm', 'md'].includes(screenClass) ? 'center' : '',
-                                        marginBottom: ['xs', 'sm', 'md'].includes(screenClass) ? '.5rem' : 0
-                                      }}
-                                    >
+                                      {petition.signatures} firmas{' '}
                                       <Text
                                         className='default-text'
                                         style={{
@@ -175,112 +267,67 @@ const Suggestions = ({ petitions, history, subdomain }) => {
                                           fontSize: ['xs', 'sm'].includes(screenClass) ? '.5rem' : '.7rem'
                                         }}
                                       >
-                                        por{' '}
-                                        <Text
-                                          className='default-text'
-                                          style={{
-                                            color: '#676C77',
-                                            fontFamily: 'Montserrat-Bold',
-                                            fontSize: ['xs', 'sm'].includes(screenClass) ? '.5rem' : '.7rem'
-                                          }}
-                                        >
-                                          {`${petition.user.first_name} ${petition.user.last_name ?petition.user.last_name : ''}`} {' '}
-                                        </Text>
+                                        de {parseInt(petition.amount_goal)}
                                       </Text>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                                <Col
-                                  xs={6}
-                                  sm={6}
-                                  md={3}
-                                  lg={3}
-                                  xl={3}
-                                >
-                                  <img
-                                    src={require('./assets/signature.svg')}
-                                    alt="clock"
-                                    style={{
-                                      width: '1.2rem',
-                                      marginRight: '1rem'
-                                    }}
-                                  />
-                                  <Text
-                                    className='default-text'
-                                    style={{
-                                      color: '#676C77',
-                                      fontFamily: 'Montserrat-Bold',
-                                      fontSize: ['xs', 'sm'].includes(screenClass) ? '.5rem' : '.7rem'
-                                    }}
+                                    </Text>
+                                  </Col>
+                                  <Col
+                                    xs={6}
+                                    sm={6}
+                                    md={3}
+                                    lg={3}
+                                    xl={3}
                                   >
-                                    {petition.signatures} firmas{' '}
+                                    <img
+                                      src={require('./assets/clock.svg')}
+                                      alt="clock"
+                                      style={{
+                                        width: '1.2rem',
+                                        marginRight: '1rem'
+                                      }}
+                                    />
                                     <Text
                                       className='default-text'
                                       style={{
                                         color: '#676C77',
+                                        fontFamily: 'Montserrat-Bold',
                                         fontSize: ['xs', 'sm'].includes(screenClass) ? '.5rem' : '.7rem'
                                       }}
                                     >
-                                      de {parseInt(petition.amount_goal)}
+                                      {petition.publishing_date}
                                     </Text>
-                                  </Text>
-                                </Col>
-                                <Col
-                                  xs={6}
-                                  sm={6}
-                                  md={3}
-                                  lg={3}
-                                  xl={3}
-                                >
-                                  <img
-                                    src={require('./assets/clock.svg')}
-                                    alt="clock"
+                                  </Col>
+                                  <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={3}
+                                    xl={3}
                                     style={{
-                                      width: '1.2rem',
-                                      marginRight: '1rem'
-                                    }}
-                                  />
-                                  <Text
-                                    className='default-text'
-                                    style={{
-                                      color: '#676C77',
-                                      fontFamily: 'Montserrat-Bold',
-                                      fontSize: ['xs', 'sm'].includes(screenClass) ? '.5rem' : '.7rem'
+                                      marginTop: ['xs', 'sm', 'md'].includes(screenClass) ? '1rem' : 0
                                     }}
                                   >
-                                    {petition.publishing_date}
-                                  </Text>
-                                </Col>
-                                <Col
-                                  xs={12}
-                                  sm={12}
-                                  md={12}
-                                  lg={3}
-                                  xl={3}
-                                  style={{
-                                    marginTop: ['xs', 'sm', 'md'].includes(screenClass) ? '1rem' : 0
-                                  }}
-                                >
-                                  <Button
-                                    onClick={() => viewPetition(petition.id)}
-                                    style={{
-                                      width: ['xs', 'sm', 'md'].includes(screenClass) ? '100%' : '8rem'
-                                    }}
-                                  >
-                                    FIRMAR AHORA
-                                  </Button>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </CardBody>
-                  </Card>
-                </Col>
-              ))
-            }
-          </Row>
+                                    <Button
+                                      onClick={() => viewPetition(petition.id)}
+                                      style={{
+                                        width: ['xs', 'sm', 'md'].includes(screenClass) ? '100%' : '8rem'
+                                      }}
+                                    >
+                                      FIRMAR AHORA
+                                    </Button>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                ))
+              }
+            </Row>
+          </>
         )
         :
         (
@@ -289,6 +336,14 @@ const Suggestions = ({ petitions, history, subdomain }) => {
       }
     </>
   )
+}
+
+Suggestions.propTypes = {
+  title: PropTypes.bool
+}
+
+Suggestions.defaultProps = {
+  title: false
 }
 
 const mapStateToProps = (state, store) => ({

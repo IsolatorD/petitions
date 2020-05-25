@@ -22,7 +22,7 @@ const ProgressBar = (props) => (
   </div>
 )
 
-ProgressBar.prototype = {
+ProgressBar.propTypes = {
   width: PropTypes.string,
   height: PropTypes.string,
   color: PropTypes.string,

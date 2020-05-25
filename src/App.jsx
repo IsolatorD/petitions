@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 
 import ReactLoading from 'react-loading'
 import {Container, Row, Col, useScreenClass} from 'react-grid-system'
@@ -11,7 +11,7 @@ import * as PetitionsActions from './store/petitions/actions'
 
 import {connect} from 'react-redux'
 
-const App = ({dispatch, subdomain, organization}) => {
+const App = ({dispatch, organization}) => {
   const screenClass = useScreenClass()
 
 

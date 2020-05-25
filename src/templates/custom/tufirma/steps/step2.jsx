@@ -185,7 +185,10 @@ const Step2 = ({changeStep, tags, onAddtag, onDeleteTag, onDestinatario, onResso
       }
 
       if (video) {
-        data.video = video
+        let splitUrl = video.split('watch?v=')
+        if (splitUrl.length > 0) {
+          data.video = splitUrl[1]
+        }
       }
       onRessources(data)
       verifyFormValidations('visual', true)
@@ -403,7 +406,7 @@ const Step2 = ({changeStep, tags, onAddtag, onDeleteTag, onDestinatario, onResso
                 }}
               >
                 <img
-                  src={isValid.problem ? require('../assets/form-p3.svg') : require('../assets/form-p3.svg')}
+                  src={isValid.problem ? require('../assets/form-p3-w.svg') : require('../assets/form-p3.svg')}
                   alt="p3"
                   style={{
                     width: '1.7rem'
