@@ -175,6 +175,7 @@ const Step2 = ({changeStep, tags, onAddtag, onDeleteTag, onDestinatario, onResso
 
   const verifyResources = () => {
     if (mainImage) {
+      setInvalidRessources(false)
       let data = {images: [], video: null}
       data.images.push(mainImage.file)
       if (optionalImageOne) {
@@ -557,6 +558,7 @@ const Step2 = ({changeStep, tags, onAddtag, onDeleteTag, onDestinatario, onResso
                     value={projectName}
                     onChange={(event) => setProjectName(event.target.value)}
                     style={{
+                      textIndent: '1rem',
                       width: '100%',
                       height: '4rem',
                       resize: 'none',
@@ -1273,6 +1275,7 @@ const Step2 = ({changeStep, tags, onAddtag, onDeleteTag, onDestinatario, onResso
                     onChange={(event) => setProjectDescription(event.target.value)}
                     name="project_description"
                     style={{
+                      textIndent: '1rem',
                       width: '100%',
                       height: '4rem',
                       resize: 'none',

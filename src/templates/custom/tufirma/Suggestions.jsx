@@ -11,12 +11,31 @@ import Avatar from '../../../components/Avatar'
 import Text from '../../../components/Text'
 import Button from '../../../components/Button'
 
-const Suggestions = ({ petitions, history, subdomain, title }) => {
+const Suggestions = ({ petitions, history, subdomain, title, category, pId }) => {
   const screenClass = useScreenClass()
   const [threePetitions, setThreePetitions] = useState([])
 
   const setCategoryImage = (category) => {
-    return require('../../../assets/icons/tufirma/1.svg')
+    switch(category) {
+      case 'Defensa de la vida':
+        return require('../../../assets/icons/tufirma/1.svg')
+      case 'Libertad Religiosa':
+        return require('../../../assets/icons/tufirma/2.svg')
+      case 'Apoyo a sacerdotes o religiosos':
+        return require('../../../assets/icons/tufirma/3.svg')
+      case 'Catedrales monumentos y parroquias':
+        return require('../../../assets/icons/tufirma/4.svg')
+      case 'Peticiones a politicos':
+        return require('../../../assets/icons/tufirma/5.svg')
+      case 'Educación':
+        return require('../../../assets/icons/tufirma/6.svg')
+      case 'Apoyo a movimientos de la iglesia':
+        return require('../../../assets/icons/tufirma/7.svg')
+      case 'Culto':
+        return require('../../../assets/icons/tufirma/8.svg')
+      case 'Otras':
+        return require('../../../assets/icons/tufirma/9.svg')
+    }
   }
 
   const viewPetition = async (petition_id) => {
@@ -26,15 +45,38 @@ const Suggestions = ({ petitions, history, subdomain, title }) => {
   useEffect(() => {
     const tpetition = []
     if (petitions.length > 0) {
+      let contador = 1
       petitions.map((p, i) => {
-        if (i <= 2) {
-          tpetition.push(p)
+        if (contador <= 3) {
+          if (pId) {
+            if (p.id !== pId) {
+              if (category) {
+                if (p.category_id === category) {
+                  tpetition.push(p)
+                  contador++
+                }
+              } else {
+                tpetition.push(p)
+                contador++
+              }
+            }
+          } else {
+            if (category) {
+              if (p.category_id === category) {
+                tpetition.push(p)
+                contador++
+              }
+            } else {
+              tpetition.push(p)
+              contador++
+            }
+          }
         }
       })
     }
 
     setThreePetitions(tpetition)
-  }, [petitions])
+  }, [petitions, category])
 
   return (
     <>
@@ -48,8 +90,8 @@ const Suggestions = ({ petitions, history, subdomain, title }) => {
                 xs={12}
                 sm={12}
                 md={12}
-                lg={8}
-                xl={8}
+                lg={10}
+                xl={10}
                 style={{
                   marginBottom: '1rem',
                   paddingLeft: ['xs', 'sm', 'md'].includes(screenClass) ? '15px' : '6rem',
@@ -60,12 +102,12 @@ const Suggestions = ({ petitions, history, subdomain, title }) => {
                 <Text
                   className='default-title'
                   style={{
-                    fontSize: '2rem',
+                    fontSize: '1.7rem',
                     color: '#333333',
                     textAlign: 'center'
                   }}
                 >
-                  Petitiones relacionadas
+                  {title}
                 </Text>
               </Col>
             }
@@ -125,7 +167,7 @@ const Suggestions = ({ petitions, history, subdomain, title }) => {
                                 xl={12}
                               >
                                 <img
-                                  src={setCategoryImage(petition.category_id)}
+                                  src={setCategoryImage(petition.category)}
                                   alt="category"
                                   style={{
                                     width: '2rem'
@@ -339,11 +381,11 @@ const Suggestions = ({ petitions, history, subdomain, title }) => {
 }
 
 Suggestions.propTypes = {
-  title: PropTypes.bool
+  title: PropTypes.string
 }
 
 Suggestions.defaultProps = {
-  title: false
+  title: null
 }
 
 const mapStateToProps = (state, store) => ({

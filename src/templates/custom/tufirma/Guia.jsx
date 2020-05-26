@@ -15,10 +15,9 @@ const Guia = () => {
         md={12}
         lg={12}
         xl={12}
-        
         style={{
           backgroundColor: '#A4DED2',
-          height: ['xs', 'sm'].includes(screenClass) ? `${24}rem` : `${10}rem`,
+          height: ['xs', 'sm'].includes(screenClass) ? `${28}rem` : `${10}rem`,
           paddingTop: `${2}rem`
         }}
       >

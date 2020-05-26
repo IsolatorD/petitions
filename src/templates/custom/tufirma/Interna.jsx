@@ -45,7 +45,8 @@ import Avatar from '../../../components/Avatar'
 import {useParams, withRouter} from 'react-router-dom'
 
 import {connect} from 'react-redux'
-// import * as PetitionActions from '../../../store/petitions/actions'
+
+import NotFound from './NotFound'
 
 import API from '../../../api'
 
@@ -65,6 +66,7 @@ const TuFirmaInterna = ({subdomain}) => {
   const [items, setItems] = useState([])
   const [copy, setCopy] = useState(false)
   const [petition, setPetition] = useState(null)
+  const [notFound, setNotFound] = useState(false)
 
   const next = () => {
     if (animating) return
@@ -119,6 +121,11 @@ const TuFirmaInterna = ({subdomain}) => {
       setPetition(response)
     } catch (error) {
       console.log('Error get Petition', error)
+      if (error.response && error.response.data) {
+        if (error.response.data.message === 'project_not_found') {
+          setNotFound(true)
+        }
+      }
     }
   }
 
@@ -464,7 +471,7 @@ const TuFirmaInterna = ({subdomain}) => {
                                   display: ['xs', 'sm'].includes(screenClass) ? 'block' : 'inline-block'
                                 }}
                               >
-                                {''}
+                                {petition ? petition.user.ocupation : ''}
                               </Text>
                             </Col>
                           </Row>
@@ -901,7 +908,7 @@ const TuFirmaInterna = ({subdomain}) => {
                               display: ['xs', 'sm'].includes(screenClass) ? 'block' : 'inline-block'
                             }}
                           >
-                            {''}
+                            {petition ? petition.user.ocupation : ''}
                           </Text>
                         </Col>
                         <Col
@@ -1160,7 +1167,11 @@ const TuFirmaInterna = ({subdomain}) => {
                 </Row>
               </Col>
             </Row>
-            <Suggestions title={true}/>
+            <Suggestions
+              title={'Petitiones relacionadas'}
+              pId={petition.id}
+              category={petition.category_id}
+            />
             <Campaign />
             <Guia />
             <Footer />
@@ -1168,30 +1179,37 @@ const TuFirmaInterna = ({subdomain}) => {
         )
         :
         (
-          <Container
-            fluid
-          >
-            <Row>
-              <Col
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginTop: ['xs', 'sm'].includes(screenClass) ? '60%' : '25%'
-                }}
-              >
-              <ReactLoading
-                type='spin'
-                color='#FF3300'
-                width='5rem'
-              />
-              </Col>
-            </Row>
-          </Container>
+          notFound ?
+          (
+            <NotFound />
+          )
+          :
+          (
+            <Container
+              fluid
+            >
+              <Row>
+                <Col
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: ['xs', 'sm'].includes(screenClass) ? '60%' : '25%'
+                  }}
+                >
+                <ReactLoading
+                  type='spin'
+                  color='#FF3300'
+                  width='5rem'
+                />
+                </Col>
+              </Row>
+            </Container>
+          )
         )
       }
     </>

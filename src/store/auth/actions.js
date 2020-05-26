@@ -49,3 +49,19 @@ export const setToken = (token) => {
     })
   }
 }
+
+export const getMyPetitions = () => {
+  return async (dispatch, getState) => {
+    const api = new API({token: getState().auth.token, orgID: getState().organization.organization.id})
+
+    try {
+      const response = (await api.getMyPetitions()).data
+      dispatch({
+        type: Types.SET_MY_PETITIONS,
+        payload: response.data
+      })
+    } catch (error) {
+      console.log('Error getMyPetitions', error)
+    }
+  }
+}

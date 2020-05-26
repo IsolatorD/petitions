@@ -49,6 +49,10 @@ export default class API {
     return this.axios.get(`/petition/${this.subdomain}/category?type=project`)
   }
 
+  getMyPetitions () {
+    return this.axios.get(`/o/${this.orgID}/petition/projects`)
+  }
+
   getPetitions () {
     return this.axios.get(`/petition/${this.subdomain}/projects`)
   }
@@ -63,6 +67,6 @@ export default class API {
       'Accept': 'application/json',
       Authorization: `bearer ${this.token}`
     }
-    return this.axios.post(`o/${this.orgID}/petition/create`, data, {headers: this.headers})
+    return this.axios.post(`/o/${this.orgID}/petition/create`, data, {headers: this.headers})
   }
 }

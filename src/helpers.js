@@ -1,3 +1,6 @@
+import React from 'react'
+import {useLocation} from 'react-router-dom'
+
 export const helpers = {
   appendArray(formData, data, key){
     if ( ( typeof data === 'object' && data !== null ) || Array.isArray(data) ) {
@@ -12,4 +15,8 @@ export const helpers = {
       formData.append(key, data)
     }
   }
+}
+
+export function useQuery() {
+  return new URLSearchParams(useLocation().search)
 }

@@ -10,7 +10,12 @@ import {
 import Card from '../../../components/Card'
 import Button from '../../../components/Button'
 import Text from '../../../components/Text'
-import Input from '../../../components/Input'
+// import Input from '../../../components/Input'
+import {
+  Input,
+  InputGroup,
+  InputGroupAddon
+} from 'reactstrap'
 
 import './index.css'
 
@@ -20,6 +25,8 @@ import Suggestions from './Suggestions'
 import Campaign from './Campaign'
 import Guia from './Guia'
 import Footer from './Footer'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 const blog = [
   { id: 0, type: 'img', name: 'iglesia', image: require('./assets/iglesia.png') },
@@ -30,10 +37,17 @@ const blog = [
   { id: 5, type: 'text', size: 19, color: '#A4DED2', text: 'Más de 300 seminaristas recibieron el segundo o el tercer grado del sacramento del Orden sacerdotal.' }
 ]
 
-const TuFirma = () => {
-  const [category, setCategory] = useState(0)
+const TuFirma = ({history, subdomain}) => {
   const screenClass = useScreenClass()
 
+  const [category, setCategory] = useState(0)
+  const [search, setSearch] = useState('')
+
+  const searchData = () => {
+    if (search !== '') {
+      history.push(`/${subdomain}/search/?q=${search}`)
+    }
+  }
   return (
     <Container
       fluid
@@ -55,7 +69,6 @@ const TuFirma = () => {
         >
           <Row>
             <Col
-                 
               xs={12}
               sm={12}
               md={12}
@@ -117,49 +130,114 @@ const TuFirma = () => {
         >
           <Card
             className="tf-search-box"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
           >
-            <Text
-              className="default-text"
-              style={{
-                fontSize: ['xs', 'sm'].includes(screenClass) ? `${16}px` : `${22}px`,
-                color: '#fff',
-                fontWeight: 'bolder',
-                paddingBottom: 25
-              }}
-            >
-              Buscar peticiones
-            </Text>
-            <Input
-              placeholder="Buscar peticiones y proyectos"
-              width={['xs', 'sm'].includes(screenClass) ? `${100}%` : `${100}%`}
-              style={{
-                border: 'none',
-                borderRadius: 50,
-                height: 35,
-                paddingRight: 35,
-                paddingLeft: 35,
-                width: ['xs', 'sm'].includes(screenClass) ? `${70}%` : `${60}%`
-              }}
-            />
-            <Text
-              className="default-text"
-              style={{
-                fontSize: ['xs', 'sm'].includes(screenClass) ? `${10}px` : `${12}px`,
-                color: 'rgba(255, 255, 255, .6)',
-                paddingTop: 20,
-                paddingRight: ['xs', 'sm'].includes(screenClass) ? 30 : 60,
-                paddingLeft: ['xs', 'sm'].includes(screenClass) ? 30 : 60,
-                textAlign: 'center'
-              }}
-            >
-              Sugerencias: Construcción, parroquia, misiones, evangelización, comunidades...
-            </Text>
+            <Row>
+              <Col
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  paddingTop: ['xs', 'sm'].includes(screenClass) ? '1.5rem' : '4rem'
+                }}
+              >
+                <Text
+                  className="default-text"
+                  style={{
+                    fontSize: ['xs', 'sm'].includes(screenClass) ? `${16}px` : `${22}px`,
+                    color: '#fff',
+                    fontWeight: 'bolder',
+                    paddingBottom: ['xs', 'sm'].includes(screenClass) ? 10 : 25
+                  }}
+                >
+                  Buscar peticiones
+                </Text>
+              </Col>
+              <Col
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+              >
+                <Row>
+                  <Col
+                    xs={9}
+                    sm={9}
+                    md={9}
+                    lg={9}
+                    xl={9}
+                    offset={{
+                      xs: 1.5,
+                      sm: 1.5,
+                      md: 1.5,
+                      lg: 1.5,
+                      xl: 1.5
+                    }}
+                  >
+                    <InputGroup>
+                      <Input
+                        onChange={(event) => setSearch(event.target.value)}
+                        value={search}
+                        placeholder="Buscar peticiones y proyectos"
+                        style={{
+                          borderRadius: '15px 0 0 15px',
+                          borderRight: 0
+                        }}
+                      />
+                      <InputGroupAddon addonType="append">
+                        <Button
+                          onClick={() => searchData()}
+                          style={{
+                            borderRadius: '0 100% 100% 0',
+                            backgroundColor: '#fff',
+                            width: 'auto',
+                            height: 'auto'
+                          }}
+                        >
+                          <img
+                            src={require('./assets/search.svg')}
+                            alt="search"
+                            style={{
+                              width: '1rem',
+                              filter: 'invert(1)'
+                            }}
+                          />
+                        </Button>
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </Col>
+                </Row>
+              </Col>
+              <Col
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <Text
+                  className="default-text"
+                  style={{
+                    fontSize: ['xs', 'sm'].includes(screenClass) ? `${10}px` : `${12}px`,
+                    color: 'rgba(255, 255, 255, .6)',
+                    paddingTop: 10,
+                    paddingRight: ['xs', 'sm'].includes(screenClass) ? 30 : 60,
+                    paddingLeft: ['xs', 'sm'].includes(screenClass) ? 30 : 60,
+                    textAlign: 'center'
+                  }}
+                >
+                  Sugerencias: Construcción, parroquia, misiones, evangelización, comunidades...
+                </Text>
+              </Col>
+            </Row>
           </Card>
         </Col>
       </Row>
@@ -233,7 +311,9 @@ const TuFirma = () => {
             marginBottom: '2rem'
           }}
         >
-          <Suggestions />
+          <Suggestions
+            category={category.id || category}
+          />
         </Col>
       </Row>
       <Row justify={'center'} >
@@ -385,4 +465,8 @@ const TuFirma = () => {
   )
 }
 
-export default TuFirma
+const mapStateToProps = (state, store) => ({
+  subdomain: state.organization.subdomain
+})
+
+export default withRouter(connect(mapStateToProps)(TuFirma))

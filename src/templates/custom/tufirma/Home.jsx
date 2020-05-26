@@ -15,6 +15,8 @@ import {Formik, ErrorMessage} from 'formik'
 import * as Yup from 'yup'
 import API from '../../../api'
 
+import { useQuery } from '../../../helpers'
+
 import * as AuthActions from '../../../store/auth/actions'
 
 const logSchema = Yup.object().shape({
@@ -29,19 +31,13 @@ const logSchema = Yup.object().shape({
 
 const Home = (props) => {
   const screenClass = useScreenClass()
-  const location = useLocation()
+  const query = useQuery()
   const [name, setName] = useState('')
   const [token, setToken] = useState(null)
 
   useEffect(() => {
-    console.log(location.search.split('&'))
-    const query = location.search.split('&')
-    if (query.length > 0) {
-      const tk = query[0].split('tk')[1].slice(1)
-      const first_name = query[1].split('=')[1]
-      setToken(tk)
-      setName(first_name)
-    }
+    setToken(query.get('tk'))
+    setName(query.get('name'))
   }, [props.location])
 
   const sendPass = async (values) => {

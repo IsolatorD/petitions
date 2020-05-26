@@ -178,7 +178,7 @@ const Campaign = (props) => {
           xl
         >
           <Col
-            md={2.6}
+            md={3}
             lg={2.6}
             xl={2.6}
             style={{
@@ -187,7 +187,7 @@ const Campaign = (props) => {
               justifyContent: 'center',
               zIndex: 6,
               left: ['lg', 'xl'].includes(screenClass) ? `${10}rem` : `${7}rem`,
-              bottom: `${35}rem`
+              bottom: ['md'].includes(screenClass) ? '55rem' : ['lg'].includes(screenClass) ? '52rem' : `${45}rem`
             }}
           >
             <Card
@@ -202,7 +202,6 @@ const Campaign = (props) => {
                   md={12}
                   lg={12}
                   xl={12}
-                  
                   style={{
                     display: 'flex',
                     justifyContent: 'center'
@@ -220,7 +219,6 @@ const Campaign = (props) => {
                   md={12}
                   lg={12}
                   xl={12}
-                  
                   style={{
                     marginTop: `${1}rem`,
                     textAlign: 'center'
@@ -229,7 +227,7 @@ const Campaign = (props) => {
                   <Text
                     className="default-title"
                     style={{
-                      fontSize: ['xs', 'sm'].includes(screenClass) ? `${1.8}rem` : `${1.5}rem`,
+                      fontSize: ['xs', 'sm'].includes(screenClass) ? `${1.8}rem` : ['md'].includes(screenClass) ? '1.2rem' : `${1.5}rem`,
                       fontWeight: 'bolder',
                       color: '#fff'
                     }}
@@ -249,12 +247,11 @@ const Campaign = (props) => {
           md={12}
           lg={12}
           xl={12}
-          
           style={{
             backgroundImage: `url(${require('./assets/fondo_amarillo.svg')})`,
             backgroundSize: 'cover',
             width: `${100}%`,
-            height: ['xs', 'sm'].includes(screenClass) ? `${17}rem` : `${12}rem`,
+            height: ['xs', 'sm'].includes(screenClass) ? `${20}rem` : `${12}rem`,
             paddingLeft: 0,
             paddingRight: 0
           }}
